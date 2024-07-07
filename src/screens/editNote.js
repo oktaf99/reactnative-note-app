@@ -1,39 +1,50 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
+import CustomButton from "../components/CustomButton";
+import CustomTextInput from "../components/CustomTextInput";
 
-const editNote = ({ navigation, route }) => {
-  const [updatedTitle, setUpdatedTitle] = useState(route.params.note.title);
-  const [updatedDesc, setUpdateDesc] = useState(route.params.note.desc);
-
-  const handleSave = () => {
-    // Update the note in your database or storage
-    navigation.goBack();
-  };
-
-  const handleCancel = () => {
-    navigation.goBack();
-  };
+const AddNote = ({ setCurrentPage, editNote, currentNote }) => {
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [id, setId] = useState(currentNote.id)
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Edit Note</Text>
-      <TextInput
-        style={styles.input}
-        value={updatedTitle}
-        onChangeText={(text) => setUpdatedTitle(text)}
-        placeholder="Title"
+      <Text style={styles.pageTitle}>Edit Note</Text>
+      <CustomTextInput
+        text={title}
+        onChange={setTitle}
+        label="Judul"
+        placeholder="Judul"
+        numberOfLines={1}
+        multiline={false}
       />
-      <TextInput
-        style={styles.input}
-        value={updatedDesc}
-        onChangeText={(text) => setUpdateDesc(text)}
-        placeholder="Description"
-        multiline={true}
+      <CustomTextInput
+        text={desc}
+        onChange={setDesc}
+        label="Deskripsi"
+        placeholder="Deskripsi"
+        multiline
         numberOfLines={4}
       />
-      <View style={styles.buttons}>
-        <Button title="Save" onPress={handleSave} />
-        <Button title="Cancel" onPress={handleCancel} />
+      <View style={styles.spacerTop}>
+        <CustomButton
+          backgroundColor="#247881"
+          color="white"
+          text="Simpan"
+          width="100%"
+          onPress={() => {
+            editNote(id, title, desc);
+            setCurrentPage("home");
+          }}
+        />
+        <CustomButton
+          backgroundColor="#DDDDDD"
+          color="#203239"
+          text="Kembali ke Home"
+          width="100%"
+          onPress={() => setCurrentPage("home")}
+        />
       </View>
     </View>
   );
@@ -41,25 +52,24 @@ const editNote = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
     padding: 20,
+    marginTop: 20,
   },
-  title: {
+  pageTitle: {
+    marginTop: 20,
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    textTransform: "",
+    fontWeight: "700",
+    textAlign: "center",
+    color: "#203239",
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    marginBottom: 10,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  spacerTop: {
+    gap: 10,
+    marginTop: 25,
   },
 });
 
-export default editNote;
+export default AddNote;

@@ -9,12 +9,22 @@ const CurrentPageWidget = ({
   setCurrentPage,
   addNote,
   editNote,
+  deleteNote,
+  currentNote,
+  setCurrentNote,
 }) => {
   switch (currentPage) {
     case "home":
-      return <Home noteList={noteList} setCurrentPage={setCurrentPage} />;
+      return (
+        <Home
+          noteList={noteList}
+          setCurrentPage={setCurrentPage}
+          deleteNote={deleteNote}
+          setCurrentNote={setCurrentNote}
+        />
+      );
     case "add":
-      // Berikan function "addNote" ke component "AddNote"
+        // Berikan function "addNote" ke component "AddNote"
       return <AddNote setCurrentPage={setCurrentPage} addNote={addNote} />;
     case "edit":
       return (
@@ -22,6 +32,7 @@ const CurrentPageWidget = ({
           setCurrentPage={setCurrentPage}
           noteList={noteList}
           editNote={editNote}
+          currentNote={currentNote}
         />
       );
     default:
@@ -31,6 +42,7 @@ const CurrentPageWidget = ({
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState("home");
+  const [currentNote, setCurrentNote] = useState([]);
   const [noteList, setNoteList] = useState([
     {
       id: 1,
@@ -51,18 +63,50 @@ const App = () => {
     ]);
   };
 
-  const editNote = ({id, updatedTitle, updatedDesc}) => {
-    setNoteList(
-      noteList.map((note) =>
-        note.id === id
-          ? {
-              ...note,
-              title: updatedTitle,
-              desc: updatedDesc,
-            }
-          : note
-      )
-    );
+  // const editNote = ({ id, updatedTitle, updatedDesc }) => {
+  //   setNoteList(
+  //     noteList.map((note) =>
+  //       note.id === id
+  //         ? {
+  //             ...note,
+  //             title: updatedTitle,
+  //             desc: updatedDesc,
+  //           }
+  //         : note
+  //     )
+  //   );
+  // };
+
+  // const editNote = ({id, title, desc}) => {
+  //   const noteIndex = noteList.findIndex((note) => note.id === id);
+  //   if (noteIndex !== -1) {
+  //     const updatedNote = { id, title, desc };
+  //     const updatedNoteList = [...noteList];
+  //     updatedNoteList[noteIndex] = updatedNote;
+  //     setNoteList(updatedNoteList);
+  //   }
+  // };
+
+  const editNote = ({id, title, desc}) => {
+    const editNote = noteList.map((note) => {
+      if (note.id === id) {
+        return {
+          id,
+          title,
+          desc,
+        };
+      }
+      return note;
+    });
+    setNoteList(editNote);
+  };
+
+  const deleteNote = (id) => {
+    const deleteNote = noteList.filter((note) => {
+      return note.id !== id;
+    });
+
+    setNoteList(deleteNote);
   };
 
   return (
@@ -70,8 +114,13 @@ const App = () => {
       currentPage={currentPage}
       noteList={noteList}
       setCurrentPage={setCurrentPage}
+
       addNote={addNote}
       editNote={editNote}
+      deleteNote={deleteNote}
+      
+      currentNote={currentNote}
+      setCurrentNote={setCurrentNote}
     />
   );
 };

@@ -14,7 +14,7 @@ const CustomButton = ({
       alignItems: "center",
       backgroundColor,
       width,
-      padding: 10,
+      padding: 15,
     },
     buttonText: {
       fontSize,

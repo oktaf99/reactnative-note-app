@@ -2,7 +2,12 @@ import React from "react";
 import { FlatList, StyleSheet, View, Text } from "react-native";
 import CustomButton from "../components/CustomButton";
 
-const NoteCard = ({ item, setCurrentPage, editNote }) => {
+const NoteCard = ({
+  item,
+  setCurrentPage,
+  setCurrentNote,
+  deleteNote,
+}) => {
   return (
     <View style={styles.card}>
       <Text style={styles.cardTitle}>{item.title}</Text>
@@ -15,10 +20,8 @@ const NoteCard = ({ item, setCurrentPage, editNote }) => {
           fontSize={12}
           width={100}
           onPress={() => {
-            if (item.id) {
-              editNote(item.id);
-              setCurrentPage("edit");
-            }
+            setCurrentPage("edit");
+            setCurrentNote(item);
           }}
         />
         <CustomButton
@@ -27,14 +30,16 @@ const NoteCard = ({ item, setCurrentPage, editNote }) => {
           text="Hapus"
           fontSize={12}
           width={100}
-          onPress={() => {}}
+          onPress={() => {
+            deleteNote(item.id);
+          }}
         />
       </View>
     </View>
   );
 };
 
-const Home = ({ noteList, setCurrentPage, editNote, title, desc }) => {
+const Home = ({ noteList, setCurrentPage, deleteNote, setCurrentNote }) => {
   return (
     <View style={styles.container}>
       <CustomButton
@@ -53,7 +58,8 @@ const Home = ({ noteList, setCurrentPage, editNote, title, desc }) => {
           <NoteCard
             item={item}
             setCurrentPage={setCurrentPage}
-            editNote={editNote}
+            setCurrentNote={setCurrentNote}
+            deleteNote={deleteNote}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -84,10 +90,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   buttons: {
-    marginTop: 10,
+    marginTop: 25,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-end",
+    gap: 10,
   },
 });
 

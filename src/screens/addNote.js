@@ -37,9 +37,7 @@ const AddNote = ({ setCurrentPage, addNote }) => {
             setCurrentPage("home");
           }}
         />
-      </View>
-      <View style={styles.spacerTop}>
-        <CustomButton
+         <CustomButton
           backgroundColor="#DDDDDD"
           color="#203239"
           text="Kembali ke Home"
@@ -66,6 +64,8 @@ const styles = StyleSheet.create({
     color: "#203239",
   },
   spacerTop: {
+    display: 'flex',
+    gap: 15,
     marginTop: 30,
   },
 });

@@ -11,6 +11,7 @@ const CustomTextInput = ({
   const styles = StyleSheet.create({
     textInputWrapper: {
       marginTop: 20,
+      gap: 10,
     },
     input: {
       borderWidth: 2,
